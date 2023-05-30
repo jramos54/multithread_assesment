@@ -1,2 +1,6 @@
 .idea
-venv
+venv/
+.gitignore
+__pycache__/
+data.db
+.gitattibutes
