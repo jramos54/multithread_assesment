@@ -14,3 +14,5 @@ class SensorFactory:
         '''
         value = random.randint(-100, 100)
         return Sensor(name=name, value=value, timestamp=timestamp)
+    
+    
