@@ -15,25 +15,29 @@ def simulate_sensor(sensor, logging_service, network_obj):
     Creates the sensor simulation
     '''
     with network_obj.semaphore:
+        ''' It uses the network for allow only the 5 sensors'''
 
+        # Configure the db
         engine = create_engine("sqlite:///data.db")
         session_factory = sessionmaker(bind=engine)
         Session = scoped_session(session_factory)
 
         session = Session()
+
         while True:
             timestamp = logging_service.get_timestamp()
             sensor.timestamp = timestamp
             logging_service.log_sensor_data(sensor)
-            message = Message(
-                timestamp=sensor.timestamp, sensor_name=sensor.name, value=sensor.value
-            )
-            session.add(message)
-            session.commit()
+            # message = Message(
+            #     timestamp=sensor.timestamp, sensor_name=sensor.name, value=sensor.value
+            # )
+            # session.add(message)
+            # session.commit()
+            repository.save_to_database(sensor,session)
             # Each sensor has its own delay
             time.sleep(sensor.delay)
 
-        session.remove()
+            session.close()
 
 
 def simulate_sensor_logging():

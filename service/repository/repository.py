@@ -30,12 +30,12 @@ class SensorRepository:
         '''
         Message.__table__.create(bind=engine)
 
-    def save_to_database(self, sensor: any) -> None:
+    def save_to_database(self, sensor: any, session:any) -> None:
         '''
         method for save the data to db
         '''
         message = Message(
             timestamp=sensor.timestamp, sensor_name=sensor.name, value=sensor.value
         )
-        self.session.add(message)
-        self.commit()
+        session.add(message)
+        session.commit()
